@@ -17,15 +17,15 @@ void*_Wcreate_arena(size_t size);
 #include <stdbool.h>  
 bool _Wdestroy_arena(void*);
 /*:3*//*4:*/
-#line 248 "./weaver-memory-manager.tex"
+#line 249 "./weaver-memory-manager.tex"
 
 void*_Walloc(void*arena,unsigned alignment,int right,size_t size);
 /*:4*//*5:*/
-#line 262 "./weaver-memory-manager.tex"
+#line 263 "./weaver-memory-manager.tex"
 
 bool _Wmempoint(void*arena,unsigned alignment,int regiao);
 /*:5*//*6:*/
-#line 273 "./weaver-memory-manager.tex"
+#line 274 "./weaver-memory-manager.tex"
 
 void _Wtrash(void*arena,int regiao);
 /*:6*/

@@ -267,10 +267,10 @@ EnterCriticalSection((CRITICAL_SECTION*)mutex);
 
 {
 int offset;
-struct arena_header*header= (struct arena_header*)arena;
-if(header->remaining_space>=t+((a==0)?(0):(a-1))){
+struct arena_header*head= (struct arena_header*)arena;
+if(head->remaining_space>=t+((a==0)?(0):(a-1))){
 if(right){
-p= ((char*)header->right_free)-t+1;
+p= ((char*)head->right_free)-t+1;
 /*32:*/
 #line 839 "./weaver-memory-manager.tex"
 
@@ -283,11 +283,11 @@ p= new_p;
 /*:32*/
 #line 886 "./weaver-memory-manager.tex"
 
-header->right_free= (char*)p-1;
-header->right_allocations+= (t+offset);
+head->right_free= (char*)p-1;
+head->right_allocations+= (t+offset);
 }
 else{
-p= header->left_free;
+p= head->left_free;
 /*30:*/
 #line 810 "./weaver-memory-manager.tex"
 
@@ -301,13 +301,13 @@ p= new_p;
 /*:30*/
 #line 892 "./weaver-memory-manager.tex"
 
-header->left_free= (char*)p+t;
-header->left_allocations+= (t+offset);
+head->left_free= (char*)p+t;
+head->left_allocations+= (t+offset);
 }
-header->remaining_space-= (t+offset);
+head->remaining_space-= (t+offset);
 #if defined(W_DEBUG_MEMORY)
-if(header->remaining_space<header->smallest_remaining_space)
-header->smallest_remaining_space= header->remaining_space;
+if(head->remaining_space<head->smallest_remaining_space)
+head->smallest_remaining_space= head->remaining_space;
 #endif
 }
 }
@@ -361,10 +361,10 @@ allocations= header->left_allocations;
 
 {
 int offset;
-struct arena_header*header= (struct arena_header*)arena;
-if(header->remaining_space>=t+((a==0)?(0):(a-1))){
+struct arena_header*head= (struct arena_header*)arena;
+if(head->remaining_space>=t+((a==0)?(0):(a-1))){
 if(right){
-p= ((char*)header->right_free)-t+1;
+p= ((char*)head->right_free)-t+1;
 /*32:*/
 #line 839 "./weaver-memory-manager.tex"
 
@@ -377,11 +377,11 @@ p= new_p;
 /*:32*/
 #line 886 "./weaver-memory-manager.tex"
 
-header->right_free= (char*)p-1;
-header->right_allocations+= (t+offset);
+head->right_free= (char*)p-1;
+head->right_allocations+= (t+offset);
 }
 else{
-p= header->left_free;
+p= head->left_free;
 /*30:*/
 #line 810 "./weaver-memory-manager.tex"
 
@@ -395,13 +395,13 @@ p= new_p;
 /*:30*/
 #line 892 "./weaver-memory-manager.tex"
 
-header->left_free= (char*)p+t;
-header->left_allocations+= (t+offset);
+head->left_free= (char*)p+t;
+head->left_allocations+= (t+offset);
 }
-header->remaining_space-= (t+offset);
+head->remaining_space-= (t+offset);
 #if defined(W_DEBUG_MEMORY)
-if(header->remaining_space<header->smallest_remaining_space)
-header->smallest_remaining_space= header->remaining_space;
+if(head->remaining_space<head->smallest_remaining_space)
+head->smallest_remaining_space= head->remaining_space;
 #endif
 }
 }

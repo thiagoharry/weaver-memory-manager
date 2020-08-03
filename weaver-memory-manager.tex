@@ -879,24 +879,24 @@ temos.Feito isso,
 @<Alocação de `p', tamanho `t' em `arena', alinhamento `a'@>=
 {
   int offset;
-  struct arena_header *header = (struct arena_header *) arena;
-  if(header -> remaining_space >= t + ((a == 0)?(0):(a - 1))){
+  struct arena_header *head = (struct arena_header *) arena;
+  if(head -> remaining_space >= t + ((a == 0)?(0):(a - 1))){
     if(right){
-      p = ((char *) header -> right_free) - t + 1;
+      p = ((char *) head -> right_free) - t + 1;
       @<Alinha `p' e marca `offset' de acordo com `a' (direita)@>
-      header -> right_free = (char *) p - 1;
-      header -> right_allocations += (t + offset);
+      head -> right_free = (char *) p - 1;
+      head -> right_allocations += (t + offset);
     }
     else{
-      p = header -> left_free;
+      p = head -> left_free;
       @<Alinha `p' e marca `offset' de acordo com `a' (esquerda)@>
-      header -> left_free = (char *) p + t;
-      header -> left_allocations += (t + offset);
+      head -> left_free = (char *) p + t;
+      head -> left_allocations += (t + offset);
     }
-    header -> remaining_space -= (t + offset);
+    head -> remaining_space -= (t + offset);
 #if defined(W_DEBUG_MEMORY)
-    if(header -> remaining_space < header -> smallest_remaining_space)
-      header -> smallest_remaining_space = header -> remaining_space;
+    if(head -> remaining_space < head -> smallest_remaining_space)
+      head -> smallest_remaining_space = head -> remaining_space;
 #endif
   }
 }

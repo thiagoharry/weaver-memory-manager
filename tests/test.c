@@ -409,6 +409,40 @@ void test_threads(void){
   
 }
 
+void test_memorypoint5(void){
+  void *arena = _Wcreate_arena(10 * page_size);
+  void *t1, *t2;
+  bool integrity_ok = true;
+  // Left memory
+  t1 = ((struct arena_header *) arena) -> left_free;
+  _Wmempoint(arena, 4, 0);
+  _Walloc(arena, 4, 0, 16);
+  t2 = ((struct arena_header *) arena) -> left_free;
+  _Wmempoint(arena, 4, 0);
+  _Walloc(arena, 4, 0, 16);
+  _Wtrash(arena, 0);
+  if(t2 != ((struct arena_header *) arena) -> left_free)
+    integrity_ok = false;
+  _Wtrash(arena, 0);
+  if(t1 != ((struct arena_header *) arena) -> left_free)
+    integrity_ok = false;
+  // Right memory
+  t1 = ((struct arena_header *) arena) -> right_free;
+  _Wmempoint(arena, 4, 1);
+  _Walloc(arena, 4, 1, 16);
+  t2 = ((struct arena_header *) arena) -> right_free;
+  _Wmempoint(arena, 4, 1);
+  _Walloc(arena, 4, 1, 16);
+  _Wtrash(arena, 1);
+  if(t2 != ((struct arena_header *) arena) -> right_free)
+    integrity_ok = false;
+  _Wtrash(arena, 1);
+  if(t1 != ((struct arena_header *) arena) -> right_free)
+    integrity_ok = false;
+  assert("Testing restauration of pointers after Wtrash", integrity_ok &&
+	 _Wdestroy_arena(arena));
+}
+ 
 int main(int argc, char **argv){
   int semente;
   if(argc > 1)
@@ -426,6 +460,7 @@ int main(int argc, char **argv){
   test_memorypoint2();
   test_memorypoint3();
   test_memorypoint4();
+  test_memorypoint5();
 #if !defined(__EMSCRIPTEN__)
   test_threads();
 #endif

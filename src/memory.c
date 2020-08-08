@@ -1,5 +1,5 @@
 /*39:*/
-#line 1088 "./weaver-memory-manager.tex"
+#line 1090 "./weaver-memory-manager.tex"
 
 /*7:*/
 #line 314 "./weaver-memory-manager.tex"
@@ -43,7 +43,7 @@
 
 #include <stdint.h> 
 /*:31*/
-#line 1089 "./weaver-memory-manager.tex"
+#line 1091 "./weaver-memory-manager.tex"
 
 #include "memory.h"
 /*25:*/
@@ -70,7 +70,7 @@ size_t smallest_remaining_space;
 #endif
 };
 /*:25*/
-#line 1091 "./weaver-memory-manager.tex"
+#line 1093 "./weaver-memory-manager.tex"
 
 /*36:*/
 #line 987 "./weaver-memory-manager.tex"
@@ -80,7 +80,7 @@ size_t allocations;
 struct memory_point*last_memory_point;
 };
 /*:36*/
-#line 1092 "./weaver-memory-manager.tex"
+#line 1094 "./weaver-memory-manager.tex"
 
 /*27:*/
 #line 718 "./weaver-memory-manager.tex"
@@ -192,7 +192,7 @@ if(error)return NULL;
 return arena;
 }
 /*:27*/
-#line 1093 "./weaver-memory-manager.tex"
+#line 1095 "./weaver-memory-manager.tex"
 
 /*28:*/
 #line 758 "./weaver-memory-manager.tex"
@@ -241,7 +241,7 @@ UnmapViewOfFile(arena);
 return ret;
 }
 /*:28*/
-#line 1094 "./weaver-memory-manager.tex"
+#line 1096 "./weaver-memory-manager.tex"
 
 /*34:*/
 #line 921 "./weaver-memory-manager.tex"
@@ -329,7 +329,7 @@ LeaveCriticalSection((CRITICAL_SECTION*)mutex);
 return p;
 }
 /*:34*/
-#line 1095 "./weaver-memory-manager.tex"
+#line 1097 "./weaver-memory-manager.tex"
 
 /*37:*/
 #line 1005 "./weaver-memory-manager.tex"
@@ -437,7 +437,7 @@ return false;
 return true;
 }
 /*:37*/
-#line 1096 "./weaver-memory-manager.tex"
+#line 1098 "./weaver-memory-manager.tex"
 
 /*38:*/
 #line 1047 "./weaver-memory-manager.tex"
@@ -491,12 +491,14 @@ head->remaining_space+= (head->right_allocations-
 point->allocations);
 head->right_point= point->last_memory_point;
 head->right_allocations= point->allocations;
+head->right_free= ((char*)point)+sizeof(struct memory_point)-1;
 }
 else{
 head->remaining_space+= (head->left_allocations-
 point->allocations);
 head->left_point= point->last_memory_point;
 head->left_allocations= point->allocations;
+head->left_free= point;
 }
 }
 /*24:*/
@@ -509,10 +511,10 @@ pthread_mutex_unlock((pthread_mutex_t*)mutex);
 LeaveCriticalSection((CRITICAL_SECTION*)mutex);
 #endif
 /*:24*/
-#line 1076 "./weaver-memory-manager.tex"
+#line 1078 "./weaver-memory-manager.tex"
 
 }
 /*:38*/
-#line 1097 "./weaver-memory-manager.tex"
+#line 1099 "./weaver-memory-manager.tex"
 
 /*:39*/

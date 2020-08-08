@@ -1015,12 +1015,14 @@ void _Wtrash(void *arena, int right){
                                   point -> allocations);
       head -> right_point = point -> last_memory_point;
       head -> right_allocations = point -> allocations;
+      head -> right_free = ((char *) point) + sizeof(struct memory_point) - 1;
     }
     else{
       head -> remaining_space += (head -> left_allocations -
                                   point -> allocations);
       head -> left_point = point -> last_memory_point;
       head -> left_allocations = point -> allocations;
+      head -> left_free = point;
     }
   }
   @<`*mutex':SIGNAL()@>

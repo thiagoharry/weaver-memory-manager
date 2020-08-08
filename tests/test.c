@@ -421,11 +421,15 @@ void test_memorypoint5(void){
   _Wmempoint(arena, 4, 0);
   _Walloc(arena, 4, 0, 16);
   _Wtrash(arena, 0);
-  if(t2 != ((struct arena_header *) arena) -> left_free)
+  if(t2 != ((struct arena_header *) arena) -> left_free){
+    printf("%p != %p\n", t2, ((struct arena_header *) arena) -> left_free);
     integrity_ok = false;
+  }
   _Wtrash(arena, 0);
-  if(t1 != ((struct arena_header *) arena) -> left_free)
+  if(t1 != ((struct arena_header *) arena) -> left_free){
+    printf("%p != %p\n", t1, ((struct arena_header *) arena) -> left_free);
     integrity_ok = false;
+  }
   // Right memory
   t1 = ((struct arena_header *) arena) -> right_free;
   _Wmempoint(arena, 4, 1);
@@ -434,8 +438,10 @@ void test_memorypoint5(void){
   _Wmempoint(arena, 4, 1);
   _Walloc(arena, 4, 1, 16);
   _Wtrash(arena, 1);
-  if(t2 != ((struct arena_header *) arena) -> right_free)
+  if(t2 != ((struct arena_header *) arena) -> right_free){
+    printf("(3) %p != %p\n", t2, ((struct arena_header *) arena) -> right_free);
     integrity_ok = false;
+  }
   _Wtrash(arena, 1);
   if(t1 != ((struct arena_header *) arena) -> right_free)
     integrity_ok = false;
